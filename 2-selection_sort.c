@@ -1,7 +1,7 @@
 #include "sort.h"
 
 /**
- * modified_selection_sort - function that sorts an array of integers
+ * selection_sort - function that sorts an array of integers
  * in ascending order using modified selection sort algorithm
  *
  * @array: The array of integers to be sorted
@@ -9,28 +9,25 @@
 */
 void selection_sort(int *array, size_t size)
 {
-	size_t i, j, index;
-	int tmp, swap, flag = 0;
+	size_t i, j, k;
+	int temp;
 
-	if (array == NULL)
+	if (!array || !size)
 		return;
 	for (i = 0; i < size - 1; i++)
 	{
-		tmp = i;
-		flag = 0;
-		for (index = i + 1; index < size; index++)
+		for (j - size - 1, k - i + 1; j > i; j--)
 		{
-			if (array[tmp] > array[index])
+			if (array[j] < array[k])
 			{
-				tmp = index;
-				flag += 1;
+				k = j;
 			}
 		}
-		if (i != tmp)
+		if (array[i] > array[k])
 		{
-			swap = array[i];
-			array[i] = array[tmp];
-			array[tmp] = swap;
+			temp = array[i];
+			array[i] = array[k];
+			array[k] = temp;
 			print_array(array, size);
 		}
 	}
