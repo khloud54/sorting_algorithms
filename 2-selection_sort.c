@@ -1,42 +1,47 @@
 #include "sort.h"
 
 /**
- * modified_swap_ints - swap two integers in an array using a different approach
- * @a: the first integer to swap
- * @b: the second integer to swap
+ * swap_ints - swap two integers in an array.
+ * @x: The first integer to swap
+ * @y: The second integer to swap.
 */
-void modified_swap_ints(int *a, int *b)
+void swap_ints(int *x, int *y)
 {
-	*a = *a + *b;
-	*b = *a - *b;
-	*a = *a - *b;
+	int temporary;
+
+	temporary = *x;
+	*x = *y;
+	*y = temporary;
 }
 
+
 /**
- * selection_sort -  function that sorts an array of integers in ascending order
- * @array: An array of integers
- * @size: the size of the array
+ * selection_sort - sort an array of integers in ascending order
+ * using the selection of sort algorithm.
+ *
+ * size: size of array
+ * @array: array of integers
  * Description: prints the array after each swap.
 */
 void selection_sort(int *array, size_t size)
 {
-	int *min;
-	size_t i, j;
+	int *min_ptr;
+	size_t idx, inner_idx;
 
 	if (array == NULL || size < 2)
 		return;
 
-	for (i = 0; i < size - 1; i++)
+	for (idx = 0; idx < size - 1; idx++)
 	{
-		min = array + i;
-		for (j = i + 1; j < size; j++)
-			min = (array[j] < *min) ? (array + j) : min;
+		min_ptr = array + idx;
+		for (inner_idx = idx + 1; inner_idx < size; inner_idx++)
+			min_ptr = (array[inner_idx] < *min_ptr) ? (array + inner_idx) : min_ptr;
 
-		if ((array + i) != min)
+		if ((array + idx) != min_ptr)
 		{
-			*min = *min + array[i];
-			array[i] = *min - array[i];
-			*min = *min - array[i];
+			int temp = *min_ptr;
+			*min_ptr = array[idx];
+			array[idx] = temp;
 
 			print_array(array, size);
 		}
