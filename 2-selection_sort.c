@@ -23,23 +23,28 @@ void swap_ints(int *x, int *y)
 */
 void selection_sort(int *array, size_t size);
 {
-	int *min_ptr;
-	size_t idx, inner_idx;
+	size_t idx1, idx2, min_idx, tmp;
 
-	if (array == NULL || size < 2)
+	if (array == NULL)
 		return;
 
-	for (idx = 0; idx < size - 1; idx++)
+	for (idx1 = 0; idx1 < size; idx1++)
 	{
-		min_ptr = array + idx;
-		for (inner_idx = idx + 1; inner_idx < size; inner_idx++)
-			min_ptr = (array[inner_idx] < *min_ptr) ? (array + inner_idx) : min_ptr;
+		min_idx = idx1;
 
-		if ((array + idx) != min_ptr)
+		for (idx2 = idx1; idx2 < size; idx2++)
 		{
-			int temp = *min_ptr;
-			*min_ptr = array[idx];
-			array[idx] = temp;
+			if (array[idx2] < array[min_idx])
+			{
+				min_idx = idx2;
+			}
+		}
+
+		if (min_idx != idx1)
+		{
+			tmp = array[min_idx];
+			array[min_idx] = array[idx1];
+			array[idx1] = tmp;
 
 			print_array(array, size);
 		}
