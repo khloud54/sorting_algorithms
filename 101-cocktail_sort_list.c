@@ -2,7 +2,7 @@
 
 /**
  * list_len - Returns list length
- * @myList: Linked list
+ * @list: Linked list
  * Return: length of the list
 */
 size_t list_len(listint_t *list)
@@ -15,7 +15,7 @@ size_t list_len(listint_t *list)
 		list = list->next;
 	}
 
-	return custom_len;
+	return (custom_len);
 }
 
 /**
@@ -94,10 +94,9 @@ void cocktail_sort_list(listint_t **list)
 				switch_nodes(list, &current_node);
 				print_list(*list);
 			}
+
 			else
 				current_node = current_node->prev;
 		}
 	}
 }
-
-
