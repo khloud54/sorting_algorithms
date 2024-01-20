@@ -1,84 +1,103 @@
 #include "sort.h"
 
 /**
- * swap - swaps two nodes
- * @head: head of the list
- * @node1: first node to sort
- * @node2: second node to sort
- */
-void swap(listint_t **head, listint_t *node1, listint_t *node2)
+ * list_len - Returns list length
+ * @myList: Linked list
+ * Return: length of the list
+*/
+size_t list_len(listint_t *list)
 {
-    if (node1 == node2) {
-        return; // No need to swap if both nodes are the same
-    }
+	size_t custom_len = 0;
 
-    // Adjust previous and next pointers for node1
-    if (node1->prev != NULL) {
-        node1->prev->next = node2;
-    } else {
-        *head = node2;
-    }
+	while (list)
+	{
+		custom_len++;
+		list = list->next;
+	}
 
-    if (node1->next != NULL) {
-        node1->next->prev = node2;
-    }
-
-    // Adjust previous and next pointers for node2
-    if (node2->prev != NULL) {
-        node2->prev->next = node1;
-    } else {
-        *head = node1;
-    }
-
-    if (node2->next != NULL) {
-        node2->next->prev = node1;
-    }
-
-    // Swap prev and next pointers for node1 and node2
-    listint_t *temp = node1->prev;
-    node1->prev = node2->prev;
-    node2->prev = temp;
-
-    temp = node1->next;
-    node1->next = node2->next;
-    node2->next = temp;
+	return custom_len;
 }
 
 /**
- * cocktail_sort_list - sorts a list using the cocktail sort algorithm
- * @list: list to sort
- */
+ * switch_nodes - Swap/Return node
+ * @list: List node
+ * @p: pointer node
+*/
+void switch_nodes(listint_t **list, listint_t **p)
+{
+	listint_t *prev_one, *current_two, *next_three, *fourth_node;
+
+	prev_one = (*p)->prev;
+	current_two = *p;
+	next_three = (*p)->next;
+	fourth_node = (*p)->next->next;
+
+	current_two->next = fourth_node;
+
+	if (fourth_node)
+		fourth_node->prev = current_two;
+
+	next_three->next = current_two;
+	next_three->prev = current_two->prev;
+
+	if (prev_one)
+		prev_one->prev = next_three;
+	else
+		*list = next_three;
+
+	current_two->prev = next_three;
+
+	*p = next_three;
+}
+
+/**
+ * cocktail_sort_list - sort a doubly linked list
+ * @list: list pointer
+*/
 void cocktail_sort_list(listint_t **list)
 {
-	listint_t *head;
-	int flag = 0;
+	listint_t *current_node;
+	int is_sorted = 0;
 
-	if (!list || !*list || !(*list)->next)
+	if (!list || !*list || list_len(*list) < 2)
 		return;
 
-	do {
-		for (head = *list; head->next != NULL; head = head->next)
+	current_node = *list;
+
+	while (!is_sorted)
+	{
+		is_sorted = 1;
+
+		while (current_node->next)
 		{
-			if (head->n > head->next->n)
+			if (current_node->n > current_node->next->n)
 			{
-				swap(list, head, head->next);
+				is_sorted = 0;
+				switch_nodes(list, &current_node);
 				print_list(*list);
-				flag = 1;
-				head = head->prev;
 			}
+			else
+				current_node = current_node->next;
 		}
-		if (flag == 0)
+
+		if (is_sorted)
 			break;
-		flag = 0;
-		for (; head->prev != NULL; head = head->prev)
+
+		current_node = current_node->prev;
+
+		while (current_node->prev)
 		{
-			if (head->n < head->prev->n)
+			if (current_node->n < current_node->prev->n)
 			{
-				swap(list, head->prev, head);
+				is_sorted = 0;
+				current_node = current_node->prev;
+				switch_nodes(list, &current_node);
 				print_list(*list);
-				flag = 1;
-				head = head->next;
 			}
+			else
+				current_node = current_node->prev;
 		}
-	} while (flag == 1);
+	}
 }
+
+
