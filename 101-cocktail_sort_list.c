@@ -1,28 +1,31 @@
 #include "sort.h"
 
 /**
- * swap - swaps two nodes
- * @head: head of the list
- * @node1: first node to sort
- * @node2: second node to sort
+ * customSwap - swaps two nodes in a linked list
+ * @head: pointer to the head of the list
+ * @firstNode: first node to swap
+ * @secondNode: second node to swap
  */
-void swap(listint_t **head, listint_t *node1, listint_t *node2)
+void customSwap(listint_t **head, listint_t *firstNode, listint_t *secondNode)
 {
-	listint_t *prev, *next;
+    listint_t *prevFirst = firstNode->prev;
+    listint_t *nextSecond = secondNode->next;
 
-	prev = node1->prev;
-	next = node2->next;
+    // Update pointers for first node
+    if (prevFirst != NULL)
+        prevFirst->next = secondNode;
+    else
+        *head = secondNode;
 
-	if (prev != NULL)
-		prev->next = node2;
-	else
-		*head = node2;
-	node1->prev = node2;
-	node1->next = next;
-	node2->prev = prev;
-	node2->next = node1;
-	if (next)
-		next->prev = node1;
+    firstNode->prev = secondNode;
+    firstNode->next = nextSecond;
+
+    // Update pointers for second node
+    secondNode->prev = prevFirst;
+    secondNode->next = firstNode;
+
+    if (nextSecond != NULL)
+        nextSecond->prev = firstNode;
 }
 
 /**
